@@ -1,7 +1,17 @@
 import React from "react";
+import PostTemplate from "../components/post/PostTemplate";
+import PostNavbar from "../components/post/PostNavbar";
+import PostHeader from "../components/post/PostHeader";
+import PostBody from "../components/post/PostBody";
 
-const Post = () => {
-  return <div>포스트 페이지입니다.</div>;
+const Post: React.FC = () => {
+  return (
+    <PostTemplate>
+      <PostNavbar />
+      <PostHeader />
+      <PostBody />
+    </PostTemplate>
+  );
 };
 
 export default Post;
