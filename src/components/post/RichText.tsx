@@ -108,13 +108,7 @@ const RichText = () => {
           if (indexOfSlash !== -1) {
             const selectionBounds = quill.getBounds(indexOfSlash, 1); // 1은 '/'의 길이
             const editorBounds = quill.getBounds(0, quill.getLength());
-            console.log(`셀렉션 : ${selectionBounds.top}`);
-            console.log(`에디터 : ${editorBounds.top}`);
-            console.log(`윈도우 : ${window.scrollY}`);
-
             const top = selectionBounds.top - 26 + window.scrollY;
-            console.log(`계산 : ${top}`);
-
             const left =
               selectionBounds.left - editorBounds.left + window.scrollX;
             setToolbarPosition({ top, left });
@@ -148,7 +142,7 @@ const RichText = () => {
           },
         });
         const IMG_URL = await upload.promise().then((res) => res.Location);
-        console.log(IMG_URL);
+
         if (quillRef.current) {
           const editor = quillRef.current.getEditor();
           const range = editor.getSelection();
@@ -234,6 +228,7 @@ const QuillContainer = styled(ReactQuill)`
     }
 
     outline: none;
+    margin-top: 10px;
     padding: 10px;
     position: relative;
   }
@@ -295,7 +290,7 @@ const Wrapper = styled.div<{
   align-items: center;
 
   position: absolute;
-  top: ${({ toolbarPosition }) => `${toolbarPosition.top - 30}px`};
+  top: ${({ toolbarPosition }) => `${toolbarPosition.top - 20}px`};
 
   width: 390px;
   padding: 5px;
