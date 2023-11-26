@@ -7,14 +7,40 @@ import Post from "../pages/Post";
 import QBoard from "../pages/QBoard";
 import Contact from "../pages/Contact";
 
-const Router = () => {
+const Router = ({
+  contents,
+  fetchAddContent,
+  titleValue,
+  setTitleValue,
+  coverImgUrl,
+  setCoverImgUrl,
+  bodyValue,
+  setBodyValue,
+  setContents,
+}) => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={<Home contents={contents} setContents={setContents} />}
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/post" element={<Post />} />
+        <Route
+          path="/post"
+          element={
+            <Post
+              fetchAddContent={fetchAddContent}
+              titleValue={titleValue}
+              setTitleValue={setTitleValue}
+              coverImgUrl={coverImgUrl}
+              setCoverImgUrl={setCoverImgUrl}
+              bodyValue={bodyValue}
+              setBodyValue={setBodyValue}
+            />
+          }
+        />
         <Route path="/qboard" element={<QBoard />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
