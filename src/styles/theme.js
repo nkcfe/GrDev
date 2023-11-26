@@ -1,8 +1,8 @@
 // 라이트 모드를 위한 팔레트
 export const LightTheme = {
   color: {
-    bg: "#F5F5F7",
-    subBg: "#fff",
+    bg: "#fff",
+    subBg: "#F8F8F8",
     font: "#1D1D20",
     subFont: "#71777f",
     border: "#929292",

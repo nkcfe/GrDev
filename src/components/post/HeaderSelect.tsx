@@ -81,7 +81,7 @@ const Selected = styled.div`
   padding: 7px;
   border-radius: 5px;
 
-  font-size: 14px;
+  font-size: 13px;
   font-weight: bold;
 
   cursor: pointer;

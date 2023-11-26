@@ -13,7 +13,8 @@ const Template: React.FC<TemplateProps> = ({ children }) => {
 export default Template;
 
 const Base = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  background: #f8f8f9;
+  min-height: 100vh;
+
+  position: relative;
 `;

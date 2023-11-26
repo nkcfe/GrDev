@@ -14,7 +14,11 @@ export default PostTemplate;
 const Base = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
+  align-items: center;
 
   position: relative;
+
+  background: ${({ theme }) => theme.color.bg};
+  height: 100vh;
 `;
