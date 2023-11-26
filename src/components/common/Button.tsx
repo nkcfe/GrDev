@@ -8,6 +8,7 @@ interface ButtonProps {
   fontSize?: string;
   fontWeight?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  disable?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -17,6 +18,7 @@ const Button: React.FC<ButtonProps> = ({
   pos,
   fontSize,
   fontWeight,
+  disable,
 }) => {
   return (
     <Base

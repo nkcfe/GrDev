@@ -7,12 +7,20 @@ import AWS from "aws-sdk";
 const defaultCoverImgUrl =
   "https://images.unsplash.com/photo-1617107374365-442a6876ed0a?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzZ8fHBpbmt8ZW58MHx8MHx8fDA%3D";
 
-const PostHeader: React.FC = () => {
-  const [titleValue, setTitleValue] = useState<string>("");
-  const [isOnCoverImg, setIsOnCoverImg] = useState<boolean>(false);
-  const [coverImgUrl, setCoverImgUrl] = useState<string>("");
-  // const [isShowCoverCtr, setIsShowCoverCtr] = useState<boolean>(false);
+interface Props {
+  titleValue: string;
+  setTitleValue: React.Dispatch<React.SetStateAction<string>>;
+  coverImgUrl: string;
+  setCoverImgUrl: React.Dispatch<React.SetStateAction<string>>;
+}
 
+const PostHeader: React.FC<Props> = ({
+  titleValue,
+  setTitleValue,
+  coverImgUrl,
+  setCoverImgUrl,
+}) => {
+  const [isOnCoverImg, setIsOnCoverImg] = useState<boolean>(false);
   const onToggleCoverImg = () => {
     setIsOnCoverImg(!isOnCoverImg);
     setCoverImgUrl(defaultCoverImgUrl);
@@ -83,7 +91,7 @@ const PostHeader: React.FC = () => {
 
       <TitleWrapper>
         <Title
-          placeholder="제목 없음"
+          placeholder="제목을 입력해 주세요"
           maxLength={80}
           onChange={onChangeTitleValue}
           value={titleValue}
@@ -182,7 +190,7 @@ const Title = styled.input`
   outline: none;
   border: none;
 
-  font-size: 40px;
+  font-size: 30px;
   font-weight: bold;
   color: #191b2a;
 

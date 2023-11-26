@@ -4,7 +4,8 @@ import styled from "styled-components";
 import { ImageResize } from "quill-image-resize-module-ts";
 import HeaderSelect from "./HeaderSelect";
 import AWS from "aws-sdk";
-
+import { CSSTransition } from "react-transition-group";
+import "../Modal/index.css";
 Quill.register("modules/imageResize", ImageResize);
 
 const icons = Quill.import("ui/icons");
@@ -66,8 +67,12 @@ const CustomToolbar: React.FC<Props> = ({
   );
 };
 
-const RichText = () => {
-  const [value, setValue] = useState<string>("");
+interface RichTextProps {
+  bodyValue: string;
+  setBodyValue: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const RichText: React.FC<RichTextProps> = ({ bodyValue, setBodyValue }) => {
   const [isTextDragging, setIsTextDragging] = useState<boolean>(false);
   const [toolbarPosition, setToolbarPosition] = useState<{
     top: number;
@@ -195,8 +200,8 @@ const RichText = () => {
       />
       <QuillContainer
         ref={quillRef}
-        value={value}
-        onChange={setValue}
+        value={bodyValue}
+        onChange={setBodyValue}
         placeholder="'/'를 입력하여 툴바 사용"
         modules={modules}
         formats={formats}
@@ -291,6 +296,7 @@ const Wrapper = styled.div<{
 
   position: absolute;
   top: ${({ toolbarPosition }) => `${toolbarPosition.top - 20}px`};
+  left: ${({ toolbarPosition }) => `${toolbarPosition.left}px`};
 
   width: 390px;
   padding: 5px;

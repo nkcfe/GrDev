@@ -2,19 +2,39 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../common/Button";
 import { useNavigate } from "react-router-dom";
+import { IoIosArrowBack } from "react-icons/io";
+import { LuUploadCloud } from "react-icons/lu";
+import { getToday } from "./function/common";
 
-const PostNavbar: React.FC = () => {
+interface Props {
+  fetchAddContent: () => Promise<void>;
+}
+
+const PostNavbar: React.FC<Props> = ({ fetchAddContent }) => {
   const navigate = useNavigate();
   const onClickCancleBtn = () => {
     navigate("/");
   };
+  const onClickSaveBtn = () => {
+    fetchAddContent();
+    navigate("/");
+  };
+
   return (
     <Base>
-      <Button fontWeight="bold" pointColor="red" onClick={onClickCancleBtn}>
-        취소
+      <Button fontWeight="bold" onClick={onClickCancleBtn}>
+        <IoIosArrowBack />
+        뒤로
       </Button>
-      <Button fontWeight="bold" pointColor="black">
-        저장
+      <span>{getToday()}</span>
+      <Button
+        fontWeight="bold"
+        pointColor="black"
+        onClick={(event) => onClickSaveBtn()}
+        disable
+      >
+        <LuUploadCloud />
+        출간하기
       </Button>
     </Base>
   );
@@ -25,30 +45,18 @@ export default PostNavbar;
 const Base = styled.div`
   max-width: 700px;
   width: 100%;
-  margin: 0 auto;
-  position: sticky;
-  top: 0;
+  height: 70px;
 
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
 
-  padding: 10px 30px;
-
-  background: #fff;
-
-  height: 40px;
+  background: ${({ theme }) => theme.color.bg};
 
   z-index: 2;
-`;
-
-const Logo = styled.div`
-  font-size: 30px;
-  font-weight: bold;
   span {
-    font-weight: normal;
+    font-size: 16px;
+    font-weight: bold;
+    color: #c6c6c6;
   }
 `;
-
-const CtrContainer = styled.div``;

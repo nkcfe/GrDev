@@ -1,60 +1,89 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import NavSearch from "./navitem/NavSearch";
+import NavNavigator from "./navitem/NavNavigator";
+import PostBtn from "./navitem/PostBtn";
+import ThemeToggleBtn from "./navitem/ThemeToggleBtn";
+import NavUser from "./navitem/NavUser";
 
-interface NavbarProps {
-  items: string[];
-}
-
-const Navbar: React.FC<NavbarProps> = ({ items }) => {
-  const navigate = useNavigate();
-  const handleClick = (item: string) => {
-    if (item === "Home") {
-      return navigate("/");
-    } else if (item === "Q&A") {
-      return navigate("/qboard");
-    } else if (item === "Contact") {
-      return navigate("/contact");
-    } else if (item === "Post") {
-      return navigate("/post");
-    } else if (item === "Logout") {
-      // 로그아웃
-    }
-  };
+const Navbar = () => {
   return (
-    <StyledNav>
-      <StyledUl>
-        {items.map((item, index) => (
-          <StyledLi key={index} onClick={() => handleClick(item)}>
-            {item}
-          </StyledLi>
-        ))}
-      </StyledUl>
-    </StyledNav>
+    <Base>
+      <Wrapper>
+        <LeftSideContainer>
+          <Logo>GroovyDev</Logo>
+          <NavSearch />
+        </LeftSideContainer>
+        <MiddleSideContainer>
+          <NavNavigator />
+        </MiddleSideContainer>
+        <RightSideContainer>
+          <ThemeToggleBtn />
+          <PostBtn />
+          <VerticlaLine />
+          <NavUser />
+        </RightSideContainer>
+      </Wrapper>
+    </Base>
   );
 };
 
 export default Navbar;
+const Base = styled.div`
+  position: sticky;
+  top: 0;
 
-const StyledNav = styled.nav`
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px);
+  z-index: 2;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 0 auto;
+
+  max-width: 1280px;
+  height: 70px;
+
+  padding: 0 15px;
+`;
+
+const LeftSideContainer = styled.div`
   display: flex;
   justify-content: center;
-  background-color: #333;
-  padding: 10px;
+  align-items: center;
+  position: relative;
 `;
-
-const StyledUl = styled.ul`
-  list-style: none;
-  padding: 0;
+const MiddleSideContainer = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-left: 180px;
+`;
+const RightSideContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 `;
 
-const StyledLi = styled.li`
-  margin-right: 10px;
-  color: white;
-  cursor: pointer;
+const Logo = styled.div`
+  font-size: 26px;
+  font-weight: bold;
 
-  &:hover {
-    text-decoration: underline;
-  }
+  font-family: "Josefin Sans", sans-serif;
+`;
+
+const VerticlaLine = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1px;
+  height: 20px;
+  margin: 0 10px;
+  border-right: 2px solid #d5d5df;
 `;
