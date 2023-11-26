@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { FirebaseError } from 'firebase/app';
+// import { FirebaseError } from 'firebase/app';
 import { useForm } from 'react-hook-form';
 
 interface RegisterData {

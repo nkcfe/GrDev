@@ -2,10 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import RichText from "./RichText";
 
-const PostBody: React.FC = () => {
+interface Props {
+  bodyValue: string;
+  setBodyValue: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const PostBody: React.FC<Props> = ({ bodyValue, setBodyValue }) => {
   return (
     <Base>
-      <RichText />
+      <RichText bodyValue={bodyValue} setBodyValue={setBodyValue} />
     </Base>
   );
 };
