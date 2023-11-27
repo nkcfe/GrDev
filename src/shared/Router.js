@@ -6,6 +6,7 @@ import Register from "../pages/Register";
 import Post from "../pages/Post";
 import QBoard from "../pages/QBoard";
 import Contact from "../pages/Contact";
+import MyPage from "../pages/MyPage";
 
 const Router = ({
   contents,
@@ -27,6 +28,7 @@ const Router = ({
         />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/mypage" element={<MyPage />} />
         <Route
           path="/post"
           element={
