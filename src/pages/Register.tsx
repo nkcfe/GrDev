@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 // import { FirebaseError } from 'firebase/app';
 import { useForm } from 'react-hook-form';
 import { db } from '../firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 
 interface RegisterData {
   email: string;
@@ -41,7 +41,7 @@ const Register: React.FC = () => {
           username,
           introduce,
         };
-        addDoc(collection(db, 'users'), newUserInfo);
+        setDoc(doc(db, 'users', email), newUserInfo);
         // console.log('user -> ', userCredential.user);
         // console.log('userCredential -> ', userCredential);
         alert('회원가입을 완료하였습니다.');

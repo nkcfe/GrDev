@@ -1,9 +1,10 @@
+// import { FirebaseError } from 'firebase/app';
+
 import React, { useEffect } from 'react';
 import { styled } from 'styled-components';
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { FirebaseError } from 'firebase/app';
 import { useForm } from 'react-hook-form';
 
 interface LoginData {
@@ -17,7 +18,7 @@ const Login: React.FC = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       // console.log('user -> ', user);
-      // console.log('auth.currentUser -> ', auth.currentUser);
+      console.log('auth.currentUser -> ', auth.currentUser);
     });
   }, []);
 
