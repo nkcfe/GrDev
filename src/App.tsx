@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { app, db } from "./firebase";
 import Router from "./shared/Router";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { ThemeProvider } from "styled-components";
 import { DarkTheme, LightTheme } from "./styles/theme";
 import { v4 as uuidv4 } from "uuid";
