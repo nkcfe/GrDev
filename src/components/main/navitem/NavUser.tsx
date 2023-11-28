@@ -3,6 +3,8 @@ import styled, { keyframes } from "styled-components";
 import { LuChevronDown } from "react-icons/lu";
 import { TbSettingsFilled } from "react-icons/tb";
 import { TbLogout } from "react-icons/tb";
+import { signOut } from "firebase/auth";
+import { auth } from "../../../firebase";
 
 const NavUser = () => {
   const [isDropDownOn, setIsDropDonwOn] = useState(false);
@@ -35,6 +37,14 @@ const NavUser = () => {
     };
   }, [dropdownRef]);
 
+  const logOut = async (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    await signOut(auth);
+    console.log("로그아웃에 성공");
+  };
+
   return (
     <Base onClick={openDropdown}>
       <UserProfileImgWrapper>
@@ -52,7 +62,7 @@ const NavUser = () => {
             </BtnWrapper>
             <span>마이페이지</span>
           </DropdownItem>
-          <DropdownItem>
+          <DropdownItem onClick={(e) => logOut(e)}>
             <BtnWrapper>
               <TbLogout />
             </BtnWrapper>

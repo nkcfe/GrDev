@@ -51,7 +51,8 @@ const Dim = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
 `;
 
 const Container = styled.div`

@@ -9,9 +9,10 @@ interface ButtonProps {
   fontWeight?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   disable?: boolean;
+  isSelected?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({
+const ActiveButton: React.FC<ButtonProps> = ({
   children,
   pointColor = "basic",
   onClick,
@@ -19,6 +20,7 @@ const Button: React.FC<ButtonProps> = ({
   fontSize,
   fontWeight,
   disable,
+  isSelected,
 }) => {
   return (
     <Base
@@ -27,13 +29,14 @@ const Button: React.FC<ButtonProps> = ({
       pos={pos}
       fontSize={fontSize}
       fontWeight={fontWeight}
+      isSelected={isSelected}
     >
       {children}
     </Base>
   );
 };
 
-export default Button;
+export default ActiveButton;
 
 interface BaseProps {
   pointColor?: string;
@@ -44,51 +47,22 @@ interface BaseProps {
 }
 
 const Base = styled.button<BaseProps>`
-  ${({ pointColor }) =>
-    pointColor === "basic"
+  ${({ isSelected }) =>
+    !isSelected
       ? css`
           background-color: #fff;
-          border: 1px solid #d5d5df;
+
           color: black;
           &:hover {
             background-color: #d5d5df;
-          }
-        `
-      : pointColor === "blue"
-      ? css`
-          background-color: #4fa0eb;
-          color: #fff;
-          &:hover {
-            background-color: #468ccd;
-          }
-        `
-      : pointColor === "black"
-      ? css`
-          background-color: #191b2a;
-          border: 1px solid #191b2a;
-          color: #fff;
-          &:hover {
-            background-color: #292b45;
-          }
-        `
-      : pointColor === "red"
-      ? css`
-          background-color: #fb5a50;
-          border: 1px solid #fb5a50;
-          color: #fff;
-          &:hover {
-            background-color: #dd5147;
           }
         `
       : css`
-          background-color: #fff;
-          border: 1px solid #d5d5df;
-          color: black;
-          &:hover {
-            background-color: #d5d5df;
-          }
+          background-color: #4fa0eb;
+          color: #fff;
         `}
   display:flex;
+  border: none;
   justify-content: center;
   align-items: center;
   position: ${({ pos }) => (pos ? pos : "static")};
