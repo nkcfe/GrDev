@@ -8,7 +8,8 @@ const NavNavigator = () => {
 
   const onChangeSelectedSpace = (name: string) => {
     setSelectedSpace(name);
-    navigate(name === "home" ? "/" : name === "qBoard" ? "/qboard" : "contact");
+    navigate(name === "home" ? "/" : name === "qBoard" ? "/qBoard" : "/contact");
+    console.log(selectedSpace)
   };
 
   return (

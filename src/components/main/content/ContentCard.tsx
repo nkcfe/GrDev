@@ -19,7 +19,7 @@ const ContentCard: React.FC<{
     e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>
   ) => {
     e.stopPropagation();
-    if (isModalOpen === false) {
+    if (!isModalOpen) {
       setIsModalOpen(true);
       document.body.style.overflow = "hidden";
     }

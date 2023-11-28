@@ -226,6 +226,7 @@ const QuillContainer = styled(ReactQuill)`
   .ql-editor {
     font-size: 16px;
     width: 100%;
+
     pre.ql-syntax {
       background-color: #23241f;
       color: #f8f8f2;

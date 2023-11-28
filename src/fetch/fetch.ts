@@ -5,9 +5,10 @@ import {
   getDocs,
   updateDoc,
 } from "firebase/firestore";
-import { Contents } from "../interface/interface";
+import { Contents, Projects } from "../interface/interface";
 import { db } from "../firebase";
 import { Comments } from "../interface/interface";
+import { v4 as uuidv4 } from "uuid";
 
 export const fetchContents = async (
   setContents: React.Dispatch<React.SetStateAction<Contents[]>>
@@ -103,4 +104,19 @@ export const updateComments = async (
       }
     });
   });
+};
+
+export const fetchGetProjects = async (
+  setProjects: React.Dispatch<React.SetStateAction<Projects[]>>
+) => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "projects"));
+    const initialContents: Projects[] = [];
+    querySnapshot.forEach((doc) => {
+      initialContents.push({ ...doc.data() } as Projects);
+    });
+    setProjects(initialContents);
+  } catch (error) {
+    console.error("Error fetching Contents Data:", error);
+  }
 };
