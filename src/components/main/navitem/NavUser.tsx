@@ -5,10 +5,12 @@ import { TbSettingsFilled } from "react-icons/tb";
 import { TbLogout } from "react-icons/tb";
 import { signOut } from "firebase/auth";
 import { auth } from "../../../firebase";
+import { useNavigate } from "react-router-dom";
 
 const NavUser = () => {
   const [isDropDownOn, setIsDropDonwOn] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const openDropdown = () => {
     if (isDropDownOn === false) {
@@ -56,7 +58,7 @@ const NavUser = () => {
       </DropDownBtn>
       {isDropDownOn && (
         <DropdownContainer ref={dropdownRef}>
-          <DropdownItem>
+          <DropdownItem onClick={() => navigate("/mypage")}>
             <BtnWrapper>
               <TbSettingsFilled />
             </BtnWrapper>
