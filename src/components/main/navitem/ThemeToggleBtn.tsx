@@ -5,13 +5,14 @@ import { TbMoonFilled } from "react-icons/tb";
 import { MdWbSunny } from "react-icons/md";
 import { LuGripVertical } from "react-icons/lu";
 
-const ThemeToggleBtn = () => {
+const ThemeToggleBtn: React.FC<{
+  toggleTheme: () => void;
+  themeMode: string;
+}> = ({ toggleTheme, themeMode }) => {
   return (
-    <Base>
-      <TbMoonFilled />
-      <MdWbSunny />
-      <ToggleBtn>
-        <LuGripVertical />
+    <Base onClick={toggleTheme} themeMode={themeMode}>
+      <ToggleBtn themeMode={themeMode}>
+        {themeMode === "LightMode" ? <MdWbSunny /> : <TbMoonFilled />}
       </ToggleBtn>
     </Base>
   );
@@ -19,7 +20,7 @@ const ThemeToggleBtn = () => {
 
 export default ThemeToggleBtn;
 
-const Base = styled.div`
+const Base = styled.div<{ themeMode: string }>`
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -27,8 +28,8 @@ const Base = styled.div`
 
   width: 70px;
   height: 40px;
-
-  background: #ffc553;
+  background: ${({ themeMode }) =>
+    themeMode === "LightMode" ? "#ffc553" : "#555E89"};
 
   padding: 8px;
   border-radius: 15px;
@@ -46,12 +47,12 @@ const Base = styled.div`
   position: relative;
 `;
 
-const ToggleBtn = styled.div`
+const ToggleBtn = styled.div<{ themeMode: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
 
-  left: 8px;
+  left: ${({ themeMode }) => (themeMode === "LightMode" ? "8px" : "34px")};
 
   padding: 5px;
 
@@ -61,6 +62,7 @@ const ToggleBtn = styled.div`
 
   background: #fff;
   svg {
-    color: #ffc553;
+    color: ${({ themeMode }) =>
+      themeMode === "LightMode" ? "#ffc553" : "#121C46"};
   }
 `;

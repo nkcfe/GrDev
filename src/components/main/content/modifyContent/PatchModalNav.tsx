@@ -4,6 +4,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { LuUploadCloud } from "react-icons/lu";
 import { updateContent } from "../../../../fetch/fetch";
 import { Contents } from "../../../../interface/interface";
+import { useMutation, useQueryClient } from "react-query";
 
 interface Props {
   toggleModalHandler: () => void;
@@ -23,12 +24,24 @@ const PatchModalNav: React.FC<Props> = ({
   const [isBackBtnHovered, setIsBackBtnHovered] = useState(false);
   const [isSaveBtnHovered, setIsDeleteBtnHovered] = useState(false);
 
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation<
+    void,
+    unknown,
+    { content: Contents; titleValue: string; bodyValue: string }
+  >(updateContent, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("contents");
+    },
+  });
+
   const onClickBackBtn = () => {
     toggleModalHandler();
   };
 
   const onClickSaveBtn = () => {
-    updateContent(content, setContents, titleValue, bodyValue);
+    mutation.mutate({ content, titleValue, bodyValue });
     toggleModalHandler();
   };
 

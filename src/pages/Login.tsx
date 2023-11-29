@@ -28,9 +28,12 @@ const Login: React.FC = () => {
 
   const login = async (data: LoginData) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
       // console.log(userCredential);
-      // user.getIdToken();
       navigate('/');
     } catch (error) {
       // const err = error as FirebaseError;
@@ -38,9 +41,21 @@ const Login: React.FC = () => {
       // const errorCode = err.code;
       // const errorMsg = err.message;
       // console.log('error with login', errorCode, errorMsg);
-      alert('이메일과 비밀번호를 확인해주세요.');
+      alert("이메일과 비밀번호를 확인해주세요.");
     }
   };
+
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       const uid = user.uid;
+  //       alert(`인증 성공 상태입니다. 메인으로 갑니다. uid => ${uid}`);
+  //       navigate("/");
+  //     } else {
+  //       alert("이미 로그인한 상태입니다.");
+  //     }
+  //   });
+  // }, [navigate]);
 
   return (
     <BG>
@@ -51,16 +66,16 @@ const Login: React.FC = () => {
           <div>
             <div>
               <h3>아이디</h3>
-              <Input type='email' {...register('email')} />
+              <Input type="email" {...register("email")} />
             </div>
             <div>
               <h3>비밀번호</h3>
-              <Input type='password' {...register('password')} />
+              <Input type="password" {...register("password")} />
             </div>
           </div>
           <Btns>
-            <Btn type='submit'>로그인</Btn>
-            <Btn type='button' onClick={() => navigate('/register')}>
+            <Btn type="submit">로그인</Btn>
+            <Btn type="button" onClick={() => navigate("/register")}>
               회원가입
             </Btn>
           </Btns>

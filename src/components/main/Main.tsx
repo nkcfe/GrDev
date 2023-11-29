@@ -1,38 +1,104 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import UserProfileCard from "./card/UserProfileCard";
 import PostCard from "./card/PostCard";
 import ContentCard from "./content/ContentCard";
 import { Contents } from "../../interface/interface";
+import { useInfiniteQuery, useQuery } from "react-query";
+import { firstLimitedContents, nextLimitedContents } from "../../fetch/fetch";
+import UserProfileCardSkeleton from "./skeleton/UserProfileCardSkeleton";
+import PostCardSkeleton from "./skeleton/PostCardSkeleton";
+import ContentCardSkeleton from "./skeleton/ContentCardSkeleton";
+import { DocumentData } from "firebase/firestore";
+import TopContentsCard from "./card/TopContentsCard";
 
 const Main: React.FC<{
   contents: Contents[];
   setContents: React.Dispatch<React.SetStateAction<Contents[]>>;
-}> = ({ contents, setContents }) => {
+}> = ({ setContents }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+  const {
+    data: contents,
+    isSuccess,
+    isLoading,
+    isError,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery(
+    "contents",
+    ({ pageParam }) => {
+      return pageParam
+        ? nextLimitedContents(pageParam)
+        : firstLimitedContents();
+    },
+    {
+      getNextPageParam: (querySnapshots) => {
+        if (querySnapshots.size < 5) return undefined;
+        else return querySnapshots.docs[querySnapshots.docs.length - 1];
+      },
+    }
+  );
 
   const handleModalToggle = () => setIsModalOpen(!isModalOpen);
+
+  useEffect(() => {
+    let fetching = false;
+    const handleScroll = async (e: any) => {
+      const { scrollHeight, scrollTop, clientHeight } =
+        e.target.scrollingElement;
+      if (!fetching && scrollHeight - scrollTop - clientHeight === 0) {
+        fetching = true;
+        if (hasNextPage) await fetchNextPage();
+        fetching = false;
+      }
+    };
+    document.addEventListener("scroll", handleScroll);
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, [fetchNextPage, hasNextPage]);
+
   return (
     <Base>
       <LeftSideBarContainer>
-        <UserProfileCard />
+        {isLoading ? <UserProfileCardSkeleton /> : <UserProfileCard />}
       </LeftSideBarContainer>
       <CenterContainer>
-        <PostCard />
+        {isLoading ? <PostCardSkeleton /> : <PostCard />}
+
         <ContentsList onClick={handleModalToggle}>
-          {contents.map((content) => (
-            <ContentCard
-              key={content.id}
-              content={content}
-              setContents={setContents}
-            />
-          ))}
+          {isLoading ? (
+            <>
+              <ContentCardSkeleton />
+              <ContentCardSkeleton />
+              <ContentCardSkeleton />
+            </>
+          ) : (
+            contents?.pages
+              .flatMap((page) =>
+                page.docs.map((doc: DocumentData) => doc.data())
+              )
+              .map((content) => (
+                <ContentCard
+                  key={content.id}
+                  content={content}
+                  setContents={setContents}
+                />
+              ))
+          )}
+          {isFetchingNextPage && (
+            <>
+              <ContentCardSkeleton />
+              <ContentCardSkeleton />
+              <ContentCardSkeleton />
+            </>
+          )}
         </ContentsList>
       </CenterContainer>
       <RightSideBarContainer>
-        <UserProfileCard />
+        <TopContentsCard contents={contents}/>
       </RightSideBarContainer>
     </Base>
   );
@@ -56,6 +122,7 @@ const Base = styled.div`
   margin-top: 20px;
 
   position: relative;
+  padding-bottom: 200px;
 `;
 
 const LeftSideBarContainer = styled.div`
@@ -86,6 +153,10 @@ const RightSideBarContainer = styled.div`
   flex-direction: column;
 
   height: 100%;
+
+  position: sticky;
+  top: 90px;
+
   flex: 1;
 `;
 

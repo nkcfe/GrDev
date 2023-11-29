@@ -7,29 +7,27 @@ import { v4 as uuidv4 } from "uuid";
 import { getToday } from "../components/post/function/common";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase";
+import { Contents } from "../interface/interface";
 
 interface Props {
-  fetchAddContent: () => Promise<void>;
-  titleValue: string;
-  setTitleValue: React.Dispatch<React.SetStateAction<string>>;
-  coverImgUrl: string;
-  setCoverImgUrl: React.Dispatch<React.SetStateAction<string>>;
-  bodyValue: string;
-  setBodyValue: React.Dispatch<React.SetStateAction<string>>;
+  contents: Contents[];
 }
 
-const Post: React.FC<Props> = ({
-  fetchAddContent,
-  titleValue,
-  setTitleValue,
-  coverImgUrl,
-  setCoverImgUrl,
-  bodyValue,
-  setBodyValue,
-}) => {
+const Post: React.FC<Props> = ({ contents }) => {
+  const [titleValue, setTitleValue] = useState<string>("");
+  const [coverImgUrl, setCoverImgUrl] = useState<string>("");
+  const [bodyValue, setBodyValue] = useState<string>("");
   return (
     <PostTemplate>
-      <PostNavbar fetchAddContent={fetchAddContent} />
+      <PostNavbar
+        contents={contents}
+        titleValue={titleValue}
+        coverImgUrl={coverImgUrl}
+        bodyValue={bodyValue}
+        setTitleValue={setTitleValue}
+        setCoverImgUrl={setCoverImgUrl}
+        setBodyValue={setBodyValue}
+      />
       <PostHeader
         titleValue={titleValue}
         setTitleValue={setTitleValue}

@@ -34,6 +34,7 @@ const Base = styled.div`
     box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
       rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   }
+  border: 1px solid ${({ theme }) => theme.color.border};
 `;
 
 const IconWrapper = styled.div`
@@ -44,13 +45,14 @@ const IconWrapper = styled.div`
   width: 30px;
   height: 30px;
   border-radius: 100%;
-  background: black;
+  background: ${({ theme }) => theme.color.font};
 
-  color: #fff;
+  color: ${({ theme }) => theme.color.bg};
   font-size: 18px;
 `;
 
 const Text = styled.div`
   font-size: 15px;
   font-weight: bold;
+  color: ${({ theme }) => theme.color.font};
 `;

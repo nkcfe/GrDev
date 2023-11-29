@@ -40,6 +40,7 @@ interface BaseProps {
   pos?: string;
   fontSize?: string;
   fontWeight?: string;
+  isSelected?: boolean;
 }
 
 const Base = styled.button<BaseProps>`
@@ -57,6 +58,7 @@ const Base = styled.button<BaseProps>`
       ? css`
           background-color: #4fa0eb;
           color: #fff;
+          border: none;
           &:hover {
             background-color: #468ccd;
           }
@@ -87,7 +89,6 @@ const Base = styled.button<BaseProps>`
             background-color: #d5d5df;
           }
         `}
-
   display:flex;
   justify-content: center;
   align-items: center;

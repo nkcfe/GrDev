@@ -6,51 +6,29 @@ import { ThemeProvider } from "styled-components";
 import { DarkTheme, LightTheme } from "./styles/theme";
 import { v4 as uuidv4 } from "uuid";
 import { getToday } from "./components/post/function/common";
-import { Contents } from "./interface/interface";
-import { fetchComments, fetchContents } from "./fetch/fetch";
+import { Contents, Projects } from "./interface/interface";
+import { fetchContents } from "./fetch/fetch";
 
 const App = () => {
   const [themeMode, setThemeMode] = useState("LightMode");
+  const [projects, setProjects] = useState<Projects[]>([]);
   const [contents, setContents] = useState<Contents[]>([]);
-  const [titleValue, setTitleValue] = useState<string>("");
-  const [coverImgUrl, setCoverImgUrl] = useState<string>("");
-  const [bodyValue, setBodyValue] = useState<string>("");
+  console.log(themeMode);
 
-  const fetchAddContent = async () => {
-    const newContent = {
-      id: uuidv4(),
-      author: "chul",
-      title: titleValue,
-      body: bodyValue,
-      coverImgUrl: coverImgUrl,
-      likeCounts: 0,
-      creationDate: getToday(),
-    };
-    setContents((prev) => {
-      return [...contents, newContent];
-    });
-    await setDoc(doc(db, "contents", newContent.id), newContent);
-    setTitleValue("");
-    setCoverImgUrl("");
-    setBodyValue("");
+  const toggleTheme = () => {
+    // setThemeMode 함수를 사용하여 현재 테마 모드를 반대로 설정
+    setThemeMode((prevThemeMode) =>
+      prevThemeMode === "LightMode" ? "dark" : "LightMode"
+    );
   };
-
-  useEffect(() => {
-    fetchContents(setContents);
-  }, []);
 
   return (
     <ThemeProvider theme={themeMode === "LightMode" ? LightTheme : DarkTheme}>
       <Router
         contents={contents}
-        fetchAddContent={fetchAddContent}
-        titleValue={titleValue}
-        setTitleValue={setTitleValue}
-        coverImgUrl={coverImgUrl}
-        setCoverImgUrl={setCoverImgUrl}
-        bodyValue={bodyValue}
-        setBodyValue={setBodyValue}
-        setContents={setContents}
+        projects={projects}
+        themeMode={themeMode}
+        toggleTheme={toggleTheme}
       />
     </ThemeProvider>
   );
