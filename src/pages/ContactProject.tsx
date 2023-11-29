@@ -1,56 +1,42 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ContactTemplate from "../components/project/ContactTemplate";
 import ContactHeader from "../components/project/projectDetail/ProjectHeader";
-import { ContactProps } from "../interface/interface";
+import { Projects } from "../interface/interface";
 import styled from "styled-components";
 import ProjectItem from "../components/project/projectDetail/ProjectItem";
 import { fetchGetProjects } from "../fetch/fetch";
+import { useQuery } from "react-query";
+import ProjectItemSkeleton from "../components/project/projectDetail/skeleton/ProjectItemSkeleton";
 
-const ContactProject: React.FC<ContactProps> = ({
-  contactTypeValue,
-  setContactTypeValue,
-  contactTitleValue,
-  setContactTitleValue,
-  contactDesValue,
-  contactSetDesValue,
-  contactPurposeValue,
-  setContactPurposeValue,
-  contactTimeValue,
-  setContactTimeValue,
-  contactSelectedOption,
-  setContactSelectedOption,
-  projects,
-  setProjects,
-  projectBodyValue,
-  setProjectBodyValue,
-}) => {
-  useEffect(() => {
-    fetchGetProjects(setProjects);
-  }, [setProjects]);
+const ContactProject: React.FC<{
+  toggleTheme: () => void;
+  themeMode: string;
+}> = ({ toggleTheme, themeMode }) => {
+  const {
+    isLoading,
+    isError,
+    data: projects,
+  } = useQuery("projects", fetchGetProjects);
+
+  if (isError) {
+    return <div>Error loading contents</div>;
+  }
+
   return (
-    <ContactTemplate>
-      <ContactHeader
-        contactTypeValue={contactTypeValue}
-        setContactTypeValue={setContactTypeValue}
-        contactTitleValue={contactTitleValue}
-        setContactTitleValue={setContactTitleValue}
-        contactDesValue={contactDesValue}
-        contactSetDesValue={contactSetDesValue}
-        contactPurposeValue={contactPurposeValue}
-        setContactPurposeValue={setContactPurposeValue}
-        contactTimeValue={contactTimeValue}
-        setContactTimeValue={setContactTimeValue}
-        contactSelectedOption={contactSelectedOption}
-        setContactSelectedOption={setContactSelectedOption}
-        projects={projects}
-        setProjects={setProjects}
-        projectBodyValue={projectBodyValue}
-        setProjectBodyValue={setProjectBodyValue}
-      />
+    <ContactTemplate toggleTheme={toggleTheme} themeMode={themeMode}>
+      <ContactHeader projects={projects} />
       <ProjectList>
-        {projects.map((project) => (
-          <ProjectItem project={project} />
-        ))}
+        {isLoading ? (
+          <>
+            <ProjectItemSkeleton />
+            <ProjectItemSkeleton />
+            <ProjectItemSkeleton />
+          </>
+        ) : (
+          projects?.map((project) => (
+            <ProjectItem key={project.id} project={project} />
+          ))
+        )}
       </ProjectList>
     </ContactTemplate>
   );

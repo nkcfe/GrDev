@@ -2,37 +2,62 @@ import React, { useState } from "react";
 import { Projects } from "../../../interface/interface";
 import styled, { css } from "styled-components";
 import LoungeCarouselItem from "./LoungeCarouselItem";
-import { LuArrowBigLeft, LuArrowBigRight } from "react-icons/lu";
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import { useQuery } from "react-query";
+import { fetchGetProjects } from "../../../fetch/fetch";
+import CarouselItemSkeleton from "./CarouselItemSkeleton";
 
 interface Props {
-  projects: Projects[];
+  projects: Projects[] | undefined;
 }
 
-const LoungeCraousel: React.FC<Props> = ({ projects }) => {
+const LoungeCraousel: React.FC<Props> = ({}) => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
-  const handleNext = () =>
-    setActiveIndex((activeIndex) => (activeIndex + 1) % projects.length);
+  const {
+    isLoading,
+    isError,
+    data: projects,
+  } = useQuery("projects", fetchGetProjects);
 
-  const handlePrev = () =>
+  if (isError) {
+    return <div>Error loading contents</div>;
+  }
+
+  const handleNext = () => {
+    if (!projects) return;
+    setActiveIndex((activeIndex) => (activeIndex + 1) % projects.length);
+  };
+
+  const handlePrev = () => {
+    if (!projects) return;
     setActiveIndex(
       (activeIndex) => (activeIndex - 1 + projects.length) % projects.length
     );
+  };
 
   return (
     <Base>
       <Container>
         <CarouselList>
           <ArrowBtn pos="left" onClick={handlePrev}>
-            <LuArrowBigLeft />
+            <LuChevronLeft />
           </ArrowBtn>
-          {projects.map((project) => (
-            <CarouselItem activeIndex={activeIndex} key={project.id}>
-              <LoungeCarouselItem project={project} />
-            </CarouselItem>
-          ))}
+          {isLoading ? (
+            <>
+              <CarouselItemSkeleton />
+              <CarouselItemSkeleton />
+            </>
+          ) : (
+            projects?.map((project) => (
+              <CarouselItem activeIndex={activeIndex} key={project.id}>
+                <LoungeCarouselItem project={project} />
+              </CarouselItem>
+            ))
+          )}
+
           <ArrowBtn pos="right" onClick={handleNext}>
-            <LuArrowBigRight />
+            <LuChevronRight />
           </ArrowBtn>
         </CarouselList>
       </Container>
@@ -44,7 +69,7 @@ export default LoungeCraousel;
 
 const Base = styled.div`
   width: 100%;
-  background: #fff;
+  background: ${({ theme }) => theme.color.bg};
   padding: 20px 0;
 `;
 
@@ -61,13 +86,14 @@ const Container = styled.div`
 const ArrowBtn = styled.div<{ pos: "left" | "right" }>`
   position: absolute;
   top: 50%;
+  transform: translateY(50%);
   z-index: 1;
 
   padding: 8px 12px;
-  font-size: 30px;
+  font-size: 34px;
   font-weight: bold;
   background-color: transparent;
-  color: black;
+  color: ${({ theme }) => theme.color.font};
   border: none;
   margin: 0;
   cursor: pointer;
@@ -75,10 +101,10 @@ const ArrowBtn = styled.div<{ pos: "left" | "right" }>`
   ${({ pos }) =>
     pos === "left"
       ? css`
-          left: -60px;
+          left: -70px;
         `
       : css`
-          right: -60px;
+          right: -70px;
         `};
 `;
 

@@ -132,12 +132,14 @@ const RichText: React.FC<RichTextProps> = ({ bodyValue, setBodyValue }) => {
       const file = input.files?.[0];
       try {
         const name = Date.now();
+
         AWS.config.update({
           region: process.env.REACT_APP_AWS_S3_BUCKET_REGION,
           accessKeyId: process.env.REACT_APP_AWS_S3_BUCKET_ACCESS_KEY_ID,
           secretAccessKey:
             process.env.REACT_APP_AWS_S3_BUCKET_SECRET_ACCESS_KEY,
         });
+
         const upload = new AWS.S3.ManagedUpload({
           params: {
             ACL: "public-read",
@@ -146,6 +148,7 @@ const RichText: React.FC<RichTextProps> = ({ bodyValue, setBodyValue }) => {
             Body: file,
           },
         });
+
         const IMG_URL = await upload.promise().then((res) => res.Location);
 
         if (quillRef.current) {
@@ -226,6 +229,7 @@ const QuillContainer = styled(ReactQuill)`
   .ql-editor {
     font-size: 16px;
     width: 100%;
+    color: ${({ theme }) => theme.color.font};
 
     pre.ql-syntax {
       background-color: #23241f;
@@ -239,7 +243,7 @@ const QuillContainer = styled(ReactQuill)`
     position: relative;
   }
   .ql-editor.ql-blank::before {
-    color: rgba(0, 0, 0, 0.3);
+    color: ${({ theme }) => theme.color.placeHorderFont};
     content: attr(data-placeholder);
     top: 26px;
     pointer-events: none;
@@ -265,6 +269,7 @@ const QuillContainer = styled(ReactQuill)`
   }
   .ql-editor img {
     max-width: 100%;
+    border-radius: 15px;
   }
   .ql-container {
     min-height: 50em;
@@ -294,7 +299,7 @@ const Wrapper = styled.div<{
   display: ${({ isTextDragging }) => (isTextDragging ? "flex" : "none")};
   justify-content: center;
   align-items: center;
-
+  color: ${({ theme }) => theme.color.font};
   position: absolute;
   top: ${({ toolbarPosition }) => `${toolbarPosition.top - 20}px`};
   left: ${({ toolbarPosition }) => `${toolbarPosition.left}px`};
@@ -302,7 +307,7 @@ const Wrapper = styled.div<{
   width: 390px;
   padding: 5px;
 
-  background: #fff;
+  background: ${({ theme }) => theme.color.btnBg};
   border-radius: 20px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
@@ -311,8 +316,8 @@ const Wrapper = styled.div<{
     display: none;
   }
   .ql-active {
-    color: #716f7a;
-    background: #f3f2f7;
+    color: ${({ theme }) => theme.color.border};
+    background: ${({ theme }) => theme.color.subBg};
   }
   z-index: 22;
 `;
@@ -342,11 +347,11 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
 
-  background: #fff;
-  color: #414044;
+  background: ${({ theme }) => theme.color.btnBg};
+  color: ${({ theme }) => theme.color.font};
 
   &:hover {
-    color: #716f7a;
-    background: #f3f2f7;
+    color: ${({ theme }) => theme.color.border};
+    background: ${({ theme }) => theme.color.subBg};
   }
 `;

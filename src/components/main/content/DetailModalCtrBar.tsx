@@ -10,16 +10,15 @@ import { Contents } from "../../../interface/interface";
 import { deleteContent } from "../../../fetch/fetch";
 import Modal from "../../Modal";
 import ContentPatchModal from "./modifyContent/ContentPatchModal";
+import { useMutation, useQueryClient } from "react-query";
 
 interface Props {
-  goToHeaderHandler: () => void;
   setContents: React.Dispatch<React.SetStateAction<Contents[]>>;
   handleModalClose: () => void;
   content: Contents;
 }
 
 const DetailModalCtrBar: React.FC<Props> = ({
-  goToHeaderHandler,
   setContents,
   handleModalClose,
   content,
@@ -31,6 +30,14 @@ const DetailModalCtrBar: React.FC<Props> = ({
   const [isDeleteButtonHovered, setIsDeleteButtonHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const queryClient = useQueryClient();
+
+  const mutationDelete = useMutation(deleteContent, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("contents");
+    },
+  });
+
   const toggleModalHandler = () => {
     setIsModalOpen(!isModalOpen);
   };
@@ -41,7 +48,7 @@ const DetailModalCtrBar: React.FC<Props> = ({
 
   const onClickDeleteBtn = () => {
     handleModalClose();
-    deleteContent(content.id, setContents);
+    mutationDelete.mutate(content.id);
   };
 
   return (
@@ -71,7 +78,6 @@ const DetailModalCtrBar: React.FC<Props> = ({
           color="#F5A931"
           onMouseEnter={() => setIsGoHeaderButtonHovered(true)}
           onMouseLeave={() => setIsGoHeaderButtonHovered(false)}
-          onClick={goToHeaderHandler}
         >
           <FaRegArrowAltCircleUp />
           <span>상단</span>

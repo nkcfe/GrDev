@@ -25,6 +25,7 @@ const ProjectItem: React.FC<Props> = ({ project }) => {
   const onMoveDetailPage = () => {
     navigate(`/contact/project/${id}`);
   };
+  
 
   return (
     <Base onClick={onMoveDetailPage}>
@@ -73,7 +74,7 @@ export default ProjectItem;
 const Base = styled.div`
   margin: 0 auto;
 
-  background: #fff;
+  background: ${({ theme }) => theme.color.cardBg};
 
   display: flex;
   flex-direction: column;
@@ -101,7 +102,7 @@ const Type = styled.div`
   gap: 5px;
 
   background: #f1f5f9;
-  color: #94a3b8;
+  color: ${({ theme }) => theme.color.border};
 
   font-size: 14px;
   padding: 5px;
@@ -112,11 +113,13 @@ const Title = styled.div`
   margin-top: 15px;
   font-size: 22px;
   font-weight: bold;
+  color: ${({ theme }) => theme.color.font};
 `;
 
 const Summary = styled.div`
   margin-top: 15px;
   font-size: 15px;
+  color: ${({ theme }) => theme.color.font};
 `;
 
 const InfoContainer = styled.div`

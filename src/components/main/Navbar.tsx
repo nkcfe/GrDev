@@ -1,12 +1,15 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import NavSearch from "./navitem/NavSearch";
 import NavNavigator from "./navitem/NavNavigator";
 import PostBtn from "./navitem/PostBtn";
 import ThemeToggleBtn from "./navitem/ThemeToggleBtn";
 import NavUser from "./navitem/NavUser";
 
-const Navbar = () => {
+const Navbar: React.FC<{ toggleTheme: () => void; themeMode: string }> = ({
+  toggleTheme,
+  themeMode,
+}) => {
   return (
     <Base>
       <Wrapper>
@@ -18,7 +21,7 @@ const Navbar = () => {
           <NavNavigator />
         </MiddleSideContainer>
         <RightSideContainer>
-          <ThemeToggleBtn />
+          <ThemeToggleBtn toggleTheme={toggleTheme} themeMode={themeMode} />
           <PostBtn />
           <VerticlaLine />
           <NavUser />
@@ -32,8 +35,7 @@ export default Navbar;
 const Base = styled.div`
   position: sticky;
   top: 0;
-
-  background: rgba(255, 255, 255, 0.8);
+  background: ${({ theme }) => theme.color.navBg};
   backdrop-filter: blur(5px);
   z-index: 2;
 `;
@@ -76,6 +78,7 @@ const Logo = styled.div`
   font-weight: bold;
 
   font-family: "Josefin Sans", sans-serif;
+  color: ${({ theme }) => theme.color.font};
 `;
 
 const VerticlaLine = styled.div`

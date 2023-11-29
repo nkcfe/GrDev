@@ -5,19 +5,65 @@ import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 import { LuUploadCloud } from "react-icons/lu";
 import { getToday } from "./function/common";
+import { Contents } from "../../interface/interface";
+import { v4 as uuidv4 } from "uuid";
+import { useMutation, useQueryClient } from "react-query";
+import { fetchAddContents } from "../../fetch/fetch";
 
 interface Props {
-  fetchAddContent: () => Promise<void>;
+  contents: Contents[];
+  titleValue: string;
+  coverImgUrl: string;
+  bodyValue: string;
+  setTitleValue: React.Dispatch<React.SetStateAction<string>>;
+  setCoverImgUrl: React.Dispatch<React.SetStateAction<string>>;
+  setBodyValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const PostNavbar: React.FC<Props> = ({ fetchAddContent }) => {
+const PostNavbar: React.FC<Props> = ({
+  contents,
+  titleValue,
+  coverImgUrl,
+  bodyValue,
+  setTitleValue,
+  setCoverImgUrl,
+  setBodyValue,
+}) => {
   const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(fetchAddContents, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("contents");
+    },
+  });
+
   const onClickCancleBtn = () => {
     navigate("/");
   };
+
   const onClickSaveBtn = () => {
-    fetchAddContent();
-    navigate("/");
+    try {
+      const newContent = {
+        id: uuidv4(),
+        author: "chul",
+        title: titleValue,
+        body: bodyValue,
+        coverImgUrl: coverImgUrl,
+        likeCounts: 0,
+        creationDate: getToday(),
+      };
+
+      mutation.mutate(newContent);
+
+      setTitleValue("");
+      setCoverImgUrl("");
+      setBodyValue("");
+      navigate("/");
+    } catch (error) {
+      console.error("Error saving contents:", error);
+    }
   };
 
   return (
@@ -29,7 +75,7 @@ const PostNavbar: React.FC<Props> = ({ fetchAddContent }) => {
       <span>{getToday()}</span>
       <Button
         fontWeight="bold"
-        pointColor="black"
+        pointColor="blue"
         onClick={(event) => onClickSaveBtn()}
         disable
       >

@@ -5,12 +5,18 @@ import ContactSubNav from "./ContactSubNav";
 
 interface Props {
   children: ReactNode;
+  toggleTheme: () => void;
+  themeMode: string;
 }
 
-const ContactTemplate: React.FC<Props> = ({ children }) => {
+const ContactTemplate: React.FC<Props> = ({
+  children,
+  toggleTheme,
+  themeMode,
+}) => {
   return (
     <Base>
-      <Navbar />
+      <Navbar toggleTheme={toggleTheme} themeMode={themeMode} />
       <ContactSubNav />
       {children}
     </Base>
@@ -20,6 +26,6 @@ const ContactTemplate: React.FC<Props> = ({ children }) => {
 export default ContactTemplate;
 
 const Base = styled.div`
-  background: #f8f8f9;
+  background: ${({ theme }) => theme.color.bg};
   min-height: 100vh;
 `;

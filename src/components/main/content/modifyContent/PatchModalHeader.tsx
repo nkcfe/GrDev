@@ -56,6 +56,8 @@ const Title = styled.input`
   &::placeholder {
     color: #e3e2e2;
   }
+  color: ${({ theme }) => theme.color.font};
+  background: transparent;
 `;
 
 const MaxLength = styled.div`

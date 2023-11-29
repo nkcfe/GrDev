@@ -27,7 +27,7 @@ const Base = styled.div`
   width: 600px;
   height: 60px;
 
-  background: #fff;
+  background: ${({ theme }) => theme.color.bg};
 
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   border-radius: 15px;
@@ -61,7 +61,7 @@ const PostContainer = styled.div`
   width: 85%;
   height: 35px;
   border-radius: 15px;
-  background: #f8f8f9;
+  background: ${({ theme }) => theme.color.btnBg};
   padding-left: 25px;
 
   cursor: pointer;

@@ -4,9 +4,12 @@ import MemberHeader from "../components/project/member/MemberHeader";
 import styled from "styled-components";
 import MemberItem from "../components/project/member/MemberItem";
 
-const ContactMember = () => {
+const ContactMember: React.FC<{
+  toggleTheme: () => void;
+  themeMode: string;
+}> = ({ toggleTheme, themeMode }) => {
   return (
-    <ContactTemplate>
+    <ContactTemplate toggleTheme={toggleTheme} themeMode={themeMode}>
       <MemberHeader />
       <MemberList>
         <MemberItem />

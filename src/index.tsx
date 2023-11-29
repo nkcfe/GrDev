@@ -4,15 +4,18 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import GlobalStyle from "./styles/GlobalStyle";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+export const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <>
+  <QueryClientProvider client={queryClient}>
     <GlobalStyle />
     <App />
-  </>
+  </QueryClientProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -87,8 +87,8 @@ const Selected = styled.div`
   cursor: pointer;
 
   &:hover {
-    color: #716f7a;
-    background: #f3f2f7;
+    color: ${({ theme }) => theme.color.border};
+    background: ${({ theme }) => theme.color.subBg};
   }
 `;
 
@@ -102,8 +102,8 @@ const HeaderContainer = styled.div<{ isOpen: boolean }>`
   justify-content: center;
   align-items: center;
   gap: 5px;
-  background-color: white;
-  border: 1px solid #ccc;
+  background: ${({ theme }) => theme.color.btnBg};
+  border: 1px solid ${({ theme }) => theme.color.border};
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
@@ -121,9 +121,10 @@ const Button = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
+  color: ${({ theme }) => theme.color.font};
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: ${({ theme }) => theme.color.hover};
   }
   span {
     margin-left: 5px;

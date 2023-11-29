@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Template from "../components/main/Template";
 import Navbar from "../components/main/Navbar";
 import Main from "../components/main/Main";
@@ -10,13 +10,16 @@ import { useNavigate } from "react-router-dom";
 const Home: React.FC<{
   contents: Contents[];
   setContents: React.Dispatch<React.SetStateAction<Contents[]>>;
-}> = ({ contents, setContents }) => {
+  toggleTheme: () => void;
+  themeMode: string;
+}> = ({ contents, setContents, toggleTheme, themeMode }) => {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const uid = user.uid;
+        console.log(user.email);
       } else {
         navigate("/login");
       }
@@ -25,7 +28,7 @@ const Home: React.FC<{
 
   return (
     <Template>
-      <Navbar />
+      <Navbar toggleTheme={toggleTheme} themeMode={themeMode} />
       <Main contents={contents} setContents={setContents} />
     </Template>
   );
