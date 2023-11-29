@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
-import { styled } from "styled-components";
-import { auth } from "../firebase";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-import { FirebaseError } from "firebase/app";
-import { useForm } from "react-hook-form";
+// import { FirebaseError } from 'firebase/app';
+
+import React, { useEffect } from 'react';
+import { styled } from 'styled-components';
+import { auth } from '../firebase';
+import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 interface LoginData {
   email: string;
@@ -14,10 +15,12 @@ interface LoginData {
 const Login: React.FC = () => {
   const { register, handleSubmit } = useForm<LoginData>();
 
+  const user = auth.currentUser;
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      console.log("user -> ", user);
-      console.log("auth.currentUser -> ", auth.currentUser);
+      // console.log('user -> ', user);
+      console.log('auth.currentUser -> ', auth.currentUser);
     });
   }, []);
 
@@ -31,8 +34,7 @@ const Login: React.FC = () => {
         data.password
       );
       // console.log(userCredential);
-      // auth.currentUser.getIdToken()
-      navigate("/");
+      navigate('/');
     } catch (error) {
       // const err = error as FirebaseError;
       // console.log('로그인 오류', error, '파이어베이스 에러 확인 -> ', err);

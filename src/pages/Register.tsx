@@ -1,12 +1,15 @@
+// import { FirebaseError } from 'firebase/app';
+
 import React, { useEffect } from 'react';
 import { styled } from 'styled-components';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-// import { FirebaseError } from 'firebase/app';
 import { useForm } from 'react-hook-form';
+import { db } from '../firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
-interface RegisterData {
+interface UserData {
   email: string;
   username: string;
   password: string;
@@ -16,23 +19,28 @@ interface RegisterData {
 }
 
 const Register: React.FC = () => {
-  const { register, handleSubmit } = useForm<RegisterData>();
-
-  useEffect(() => {
-    // 인증 정보 가져오기
-    onAuthStateChanged(auth, (user) => {
-      console.log('user -> ', user);
-      // user == auth.currentUser;
-      console.log('auth.currentUser -> ', auth.currentUser);
-    });
-  }, []);
+  const { register, handleSubmit } = useForm<UserData>();
 
   const navigate = useNavigate();
 
-  const onClickSubmit = async (data: RegisterData): Promise<void> => {
+  const onClickSubmit = async (data: UserData): Promise<void> => {
     try {
       if (data.password === data.pwConfirm) {
         const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+        const { email, username, introduce } = data;
+        const img = 'https://groovy-dev-image.s3.ap-northeast-2.amazonaws.com/profile-img/default-user-icon.jpeg';
+        const newUserInfo = {
+          email,
+          username,
+          introduce,
+          img,
+          isProjectOpen: false,
+          company: '',
+          position: '',
+          skill: '',
+          career: [],
+        };
+        setDoc(doc(db, 'users', email), newUserInfo);
         // console.log('user -> ', userCredential.user);
         // console.log('userCredential -> ', userCredential);
         alert('회원가입을 완료하였습니다.');

@@ -9,6 +9,8 @@ import ContactLounge from "../pages/ContactLounge";
 import ContactProject from "../pages/ContactProject";
 import ContactMember from "../pages/ContactMember";
 import ContactProjectDetail from "../pages/ContactProjectDetail";
+import MyPage from "../pages/MyPage";
+import ProfileEdit from "../components/mypage/ProfileEdit";
 
 const Router = ({ contents, projects, toggleTheme, themeMode }) => {
   return (
@@ -54,6 +56,8 @@ const Router = ({ contents, projects, toggleTheme, themeMode }) => {
             <ContactMember toggleTheme={toggleTheme} themeMode={themeMode} />
           }
         />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/edit" element={<ProfileEdit />} />
         <Route
           path="/contact/project/:id"
           element={
