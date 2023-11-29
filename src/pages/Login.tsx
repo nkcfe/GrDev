@@ -15,6 +15,8 @@ interface LoginData {
 const Login: React.FC = () => {
   const { register, handleSubmit } = useForm<LoginData>();
 
+  const user = auth.currentUser;
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       // console.log('user -> ', user);
@@ -28,7 +30,7 @@ const Login: React.FC = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
       // console.log(userCredential);
-      // auth.currentUser.getIdToken()
+      // user.getIdToken();
       navigate('/');
     } catch (error) {
       // const err = error as FirebaseError;
