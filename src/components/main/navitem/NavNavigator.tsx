@@ -8,8 +8,10 @@ const NavNavigator = () => {
 
   const onChangeSelectedSpace = (name: string) => {
     setSelectedSpace(name);
-    navigate(name === "home" ? "/" : name === "qBoard" ? "/qBoard" : "/contact");
-    console.log(selectedSpace)
+    navigate(
+      name === "home" ? "/" : name === "qBoard" ? "/qBoard" : "/contact"
+    );
+    console.log(selectedSpace);
   };
 
   return (
@@ -61,17 +63,17 @@ const Wrapper = styled.div<{ isSelected: boolean }>`
   ${({ isSelected }) =>
     isSelected
       ? css`
-          color: #3d3d3f;
-          border-bottom: 2px solid black;
+          color: ${({ theme }) => theme.color.font};
+          border-bottom: 2px solid ${({ theme }) => theme.color.font};
         `
       : css`
-          color: #939198;
+          color: ${({ theme }) => theme.color.subFont};
           border-bottom: 2px solid transparent;
         `}
 
   &:hover {
-    color: #3d3d3f;
-    border-bottom: 2px solid black;
+    color: ${({ theme }) => theme.color.font};
+    border-bottom: 2px solid ${({ theme }) => theme.color.font};
   }
 
   cursor: pointer;

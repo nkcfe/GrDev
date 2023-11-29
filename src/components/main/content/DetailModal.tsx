@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CommentCard from "../comment/CommentCard";
 import { Comments, Contents } from "../../../interface/interface";
-import { fetchComments } from "../../../fetch/fetch";
+import { fetchAddComments, fetchComments } from "../../../fetch/fetch";
 import { v4 as uuidv4 } from "uuid";
 import CommentInput from "../comment/CommentInput";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../../../firebase";
+
 import { getToday } from "../../post/function/common";
 import CommentBlank from "../comment/CommentBlank";
 import UserIntroCard from "../card/UserIntroCard";
 import DetailModalCtrBar from "./DetailModalCtrBar";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const DetailModal: React.FC<{
   content: Contents;
@@ -20,42 +20,49 @@ const DetailModal: React.FC<{
   const { id, author, coverImgUrl, creationDate, likeCounts, title, body } =
     content;
 
-  const [comments, setComments] = useState<Comments[]>([]);
   const [commentValue, setCommentValue] = useState<string>("");
 
-  const filteredComments = comments.filter(
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(fetchAddComments, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("comments");
+    },
+  });
+
+  const {
+    isLoading,
+    isError,
+    data: comments,
+  } = useQuery("comments", fetchComments);
+
+  if (isError) {
+    return <div>Error loading contents</div>;
+  }
+
+  const filteredComments = comments?.filter(
     (comment) => comment.contentId === id
   );
 
-  const fetchAddComment = async () => {
-    const newComment = {
-      id: uuidv4(),
-      contentId: id,
-      author: "chul", // TODO 나중에 유저 데이터랑 연결
-      text: commentValue,
-      creationDate: getToday(),
-      likeCounts: 0,
-    };
-    setComments(() => {
-      return [newComment, ...comments];
-    });
-    await setDoc(doc(db, "comments", newComment.id), newComment);
-  };
-
-  useEffect(() => {
-    fetchComments(setComments);
-  }, []);
-
-  const goToHeaderHandler = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    const scrollPosition = window.scrollY || document.documentElement.scrollTop;
-    console.log("Current Scroll Position:", scrollPosition);
+  const onClickSendComment = async () => {
+    try {
+      const newComment = {
+        id: uuidv4(),
+        contentId: id,
+        author: "chul", // TODO 나중에 유저 데이터랑 연결
+        text: commentValue,
+        creationDate: getToday(),
+        likeCounts: 0,
+      };
+      mutation.mutate(newComment);
+    } catch (error) {
+      console.error("Error saving comment:", error);
+    }
   };
 
   return (
     <Base>
       <DetailModalCtrBar
-        goToHeaderHandler={goToHeaderHandler}
         setContents={setContents}
         handleModalClose={handleModalClose}
         content={content}
@@ -68,19 +75,24 @@ const DetailModal: React.FC<{
       <UserIntroCard />
       <CommentWrapper>
         <CommentInput
-          fetchAddComment={fetchAddComment}
+          onClickSendComment={onClickSendComment}
           commentValue={commentValue}
           setCommentValue={setCommentValue}
         />
-        {filteredComments.map((comment) => (
-          <CommentCard
-            key={comment.id}
-            comment={comment}
-            comments={comments}
-            setComments={setComments}
-          />
-        ))}
-        {filteredComments.length === 0 && <CommentBlank />}
+        {filteredComments
+          ?.sort(
+            (a, b) =>
+              new Date(b.creationDate).getTime() -
+              new Date(a.creationDate).getTime()
+          )
+          .map((comment) => (
+            <CommentCard
+              key={comment.id}
+              comment={comment}
+              comments={comments}
+            />
+          ))}
+        {filteredComments?.length === 0 && <CommentBlank />}
       </CommentWrapper>
     </Base>
   );
@@ -94,7 +106,7 @@ const Base = styled.div`
   justify-content: start;
   align-items: center;
 
-  background: #fff;
+  background: ${({ theme }) => theme.color.bg};
   width: 1000px;
   max-height: 90vh;
 
@@ -114,7 +126,7 @@ const Body = styled.div`
 
 const DateWrapper = styled.div`
   margin-top: 15px;
-  color: #b1b5b8;
+  color: ${({ theme }) => theme.color.subFont};
   font-weight: bold;
 `;
 
@@ -123,6 +135,7 @@ const TitleWrapper = styled.div`
   width: 600px;
   font-size: 36px;
   font-weight: bold;
+  color: ${({ theme }) => theme.color.font};
 `;
 
 const TextWrapper = styled.div`
@@ -130,8 +143,10 @@ const TextWrapper = styled.div`
   width: 600px;
   overflow-x: hidden;
   line-height: 180%;
+  color: ${({ theme }) => theme.color.font};
   img {
     width: 600px;
+    border-radius: 15px;
   }
 `;
 

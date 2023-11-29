@@ -7,10 +7,12 @@ import Button from "../common/Button";
 import ActiveButton from "../common/ActiveButton";
 import { v4 as uuidv4 } from "uuid";
 import { Projects } from "../../interface/interface";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../../firebase";
 import RichText from "../post/RichText";
 import { getToday } from "../post/function/common";
+import { fetchAddProjects } from "../../fetch/fetch";
+import { useMutation, useQueryClient } from "react-query";
+
+const queryKey = "projects";
 
 const purposeItem = [
   "포트폴리오/직무 역량 강화",
@@ -24,43 +26,20 @@ const roleItem = ["프론트엔드", "백엔드", "디자인", "기획", "기타
 
 interface Props {
   toggleModal: () => void;
-  contactTypeValue: string;
-  setContactTypeValue: React.Dispatch<React.SetStateAction<string>>;
-  contactTitleValue: string;
-  setContactTitleValue: React.Dispatch<React.SetStateAction<string>>;
-  contactDesValue: string;
-  contactSetDesValue: React.Dispatch<React.SetStateAction<string>>;
-  contactPurposeValue: string;
-  setContactPurposeValue: React.Dispatch<React.SetStateAction<string>>;
-  contactTimeValue: string;
-  setContactTimeValue: React.Dispatch<React.SetStateAction<string>>;
-  contactSelectedOption: string;
-  setContactSelectedOption: React.Dispatch<React.SetStateAction<string>>;
-  projects: Projects[];
-  setProjects: React.Dispatch<React.SetStateAction<Projects[]>>;
-  projectBodyValue: string;
-  setProjectBodyValue: React.Dispatch<React.SetStateAction<string>>;
+  projects: Projects[] | undefined;
 }
 
-const ContactPostModal: React.FC<Props> = ({
-  toggleModal,
-  contactTypeValue,
-  setContactTypeValue,
-  contactTitleValue,
-  setContactTitleValue,
-  contactDesValue,
-  contactSetDesValue,
-  contactPurposeValue,
-  setContactPurposeValue,
-  contactTimeValue,
-  setContactTimeValue,
-  contactSelectedOption,
-  setContactSelectedOption,
-  projects,
-  setProjects,
-  projectBodyValue,
-  setProjectBodyValue,
-}) => {
+const ContactPostModal: React.FC<Props> = ({ toggleModal }) => {
+  const [contactTypeValue, setContactTypeValue] = useState("");
+  const [contactTitleValue, setContactTitleValue] = useState("");
+  const [contactDesValue, contactSetDesValue] = useState("");
+  const [contactPurposeValue, setContactPurposeValue] =
+    useState<string>("포트폴리오/직무 역량 강화");
+  const [contactTimeValue, setContactTimeValue] =
+    useState<string>("매주 4시간 이하");
+  const [contactSelectedOption, setContactSelectedOption] =
+    useState<string>("");
+  const [projectBodyValue, setProjectBodyValue] = useState<string>("");
   const onChangeTypeValue = (type: string) => {
     setContactTypeValue(type);
   };
@@ -72,30 +51,43 @@ const ContactPostModal: React.FC<Props> = ({
     contactSetDesValue(e.target.value);
   };
 
-  const fetchAddProject = async () => {
-    const newProject = {
-      id: uuidv4(),
-      author: "chul",
-      type: contactTypeValue,
-      title: contactTitleValue,
-      summary: contactDesValue,
-      purpose: contactPurposeValue,
-      weekly_time: contactTimeValue,
-      recruitment_role: contactSelectedOption,
-      detail_body: projectBodyValue,
-      creation_date: getToday(),
-      likes_counts: 0,
-    };
-    setProjects((prev) => [...prev, newProject]);
-    await setDoc(doc(db, "projects", newProject.id), newProject);
-    setContactTypeValue("");
-    setContactTitleValue("");
-    contactSetDesValue("");
-    setContactPurposeValue("포트폴리오/직무 역량 강화");
-    setContactTimeValue("매주 4시간 이하");
-    setContactSelectedOption("");
-    setProjectBodyValue("");
-    toggleModal();
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(fetchAddProjects, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(queryKey);
+    },
+  });
+
+  const onClickSaveProject = async () => {
+    try {
+      const newProject = {
+        id: uuidv4(),
+        author: "chul",
+        type: contactTypeValue,
+        title: contactTitleValue,
+        summary: contactDesValue,
+        purpose: contactPurposeValue,
+        weekly_time: contactTimeValue,
+        recruitment_role: contactSelectedOption,
+        detail_body: projectBodyValue,
+        creation_date: getToday(),
+        likes_counts: 0,
+      };
+
+      mutation.mutate(newProject);
+
+      setContactTypeValue("");
+      setContactTitleValue("");
+      contactSetDesValue("");
+      setContactPurposeValue("포트폴리오/직무 역량 강화");
+      setContactTimeValue("매주 4시간 이하");
+      setContactSelectedOption("");
+      setProjectBodyValue("");
+      toggleModal();
+    } catch (error) {
+      console.error("Error saving project:", error);
+    }
   };
 
   return (
@@ -164,7 +156,7 @@ const ContactPostModal: React.FC<Props> = ({
             setBodyValue={setProjectBodyValue}
           />
         </DetailContainer>
-        <SubBtnWrapper onClick={fetchAddProject}>
+        <SubBtnWrapper onClick={onClickSaveProject}>
           <Button fontSize="16px" fontWeight="bold" pointColor="red">
             작성 완료
           </Button>

@@ -13,17 +13,30 @@ import { MdInsertChartOutlined } from "react-icons/md";
 import { SiInternetcomputer } from "react-icons/si";
 import { PiTimerBold } from "react-icons/pi";
 import ProjectUserCard from "./ProjectUserCard";
+import { useQuery } from "react-query";
+import { fetchGetProjects } from "../../../fetch/fetch";
 
-interface Props {
-  projects: Projects[];
-}
-
-const ProjectDetail: React.FC<Props> = ({ projects }) => {
+const ProjectDetail = () => {
   const params = useParams();
   const projectId = params.id;
-  const filteredProject = projects.filter(
+  const {
+    isLoading,
+    isError,
+    data: projects,
+  } = useQuery("projects", fetchGetProjects);
+
+  if (isError) {
+    return <div>Error loading contents</div>;
+  }
+
+  const filteredProject = projects?.filter(
     (project) => project.id === projectId
   )[0];
+
+  if (!filteredProject) {
+    return <div>Loading...</div>;
+  }
+
   const {
     id,
     title,
@@ -150,6 +163,7 @@ const BodyWrapper = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: start;
+  width: 100%;
 `;
 
 const Label = styled.div`

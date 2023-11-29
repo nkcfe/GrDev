@@ -66,8 +66,8 @@ const LoungeCarouselItem: React.FC<Props> = ({ project }) => {
 export default LoungeCarouselItem;
 
 const Base = styled.div`
-  background: #fff;
-  border: 1px solid #e2e8f0;
+  background: ${({ theme }) => theme.color.btnBg};
+  border: 0.5px solid ${({ theme }) => theme.color.border};
   border-radius: 10px;
 
   display: flex;
@@ -93,7 +93,7 @@ const Type = styled.div`
   gap: 5px;
 
   background: #f1f5f9;
-  color: #94a3b8;
+  ${({ theme }) => theme.color.subFont};
 
   font-size: 12px;
   padding: 3px 5px;
@@ -109,6 +109,7 @@ const Title = styled.div`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  color: ${({ theme }) => theme.color.font};
 `;
 
 const Summary = styled.div`
@@ -119,6 +120,8 @@ const Summary = styled.div`
   overflow: hidden;
   position: relative;
   line-height: 24px; /* font-size와 일치하도록 설정합니다 */
+
+  color: ${({ theme }) => theme.color.font};
 
   /* Webkit 브라우저에 대한 설정 */
   display: -webkit-box;
@@ -156,6 +159,6 @@ const Info = styled.div`
   }
   font-size: 12px;
   font-weight: bold;
-  color: #94a3b8;
-  background: #fff;
+  color: ${({ theme }) => theme.color.subFont};
+  background: transparent;
 `;

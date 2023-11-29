@@ -39,7 +39,7 @@ const Base = styled.div`
   display: flex;
   flex-direction: column;
 
-  background-color: #fff;
+  background: ${({ theme }) => theme.color.bg};
 
   padding: 20px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -91,10 +91,12 @@ const UserName = styled.div`
   font-family: "Josefin Sans", sans-serif;
   font-size: 18px;
   font-weight: bold;
+  color: ${({ theme }) => theme.color.font};
 `;
 
 const UserIntroLine = styled.div`
   font-size: 14px;
+  color: ${({ theme }) => theme.color.subFont};
 `;
 
 const Footer = styled.div`
@@ -115,6 +117,7 @@ const ItemWrapper = styled.div`
     font-family: "Josefin Sans", sans-serif;
     font-size: 26px;
     font-weight: bold;
+    color: ${({ theme }) => theme.color.font};
   }
   span {
     font-family: "Josefin Sans", sans-serif;

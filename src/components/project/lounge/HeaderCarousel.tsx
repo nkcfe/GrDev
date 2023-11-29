@@ -99,7 +99,7 @@ const HeaderCarousel = () => {
 export default HeaderCarousel;
 
 const Base = styled.div`
-  background: #f8fafc;
+  background: ${({ theme }) => theme.color.carouselBg};
 `;
 
 const Container = styled.div`
@@ -115,7 +115,7 @@ const ArrowButton = styled.button<{ pos: "left" | "right" }>`
   font-size: 30px;
   font-weight: bold;
   background-color: transparent;
-  color: black;
+  color: ${({ theme }) => theme.color.font};
   border: none;
   margin: 0;
   cursor: pointer;
@@ -159,6 +159,7 @@ const CarouselListItem = styled.li<{ activeIndex: number }>`
     display: inline-flex;
     font-size: 32px;
     font-weight: bold;
+    color: ${({ theme }) => theme.color.font};
   }
 
   img {
@@ -194,4 +195,5 @@ const Nav = styled.ul`
 
   width: 100%;
   height: 30px;
+  color: ${({ theme }) => theme.color.font};
 `;

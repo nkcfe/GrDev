@@ -1,3 +1,5 @@
+import { DocumentData } from "firebase/firestore";
+
 export interface Contents {
   id: string;
   author: string;
@@ -7,6 +9,8 @@ export interface Contents {
   title: string;
   body: string;
 }
+
+export type ContentsDocumentData = DocumentData & Contents;
 
 export interface Comments {
   id: string;
@@ -31,6 +35,8 @@ export interface Projects {
   likes_counts: number;
 }
 
+export interface Questions {}
+
 export interface ContactProps {
   contactTypeValue: string;
   setContactTypeValue: React.Dispatch<React.SetStateAction<string>>;
@@ -44,7 +50,7 @@ export interface ContactProps {
   setContactTimeValue: React.Dispatch<React.SetStateAction<string>>;
   contactSelectedOption: string;
   setContactSelectedOption: React.Dispatch<React.SetStateAction<string>>;
-  projects: Projects[];
+  projects?: Projects[];
   setProjects: React.Dispatch<React.SetStateAction<Projects[]>>;
   projectBodyValue: string;
   setProjectBodyValue: React.Dispatch<React.SetStateAction<string>>;

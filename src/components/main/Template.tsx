@@ -13,7 +13,7 @@ const Template: React.FC<TemplateProps> = ({ children }) => {
 export default Template;
 
 const Base = styled.div`
-  background: #f8f8f9;
+  background: ${({ theme }) => theme.color.subBg};
   min-height: 100vh;
 
   position: relative;

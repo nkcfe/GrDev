@@ -58,6 +58,7 @@ const Base = styled.button<BaseProps>`
       ? css`
           background-color: #4fa0eb;
           color: #fff;
+          border: none;
           &:hover {
             background-color: #468ccd;
           }

@@ -5,18 +5,18 @@ import { IoSend } from "react-icons/io5";
 import { LuSmile } from "react-icons/lu";
 
 interface Props {
-  fetchAddComment: () => Promise<void>;
+  onClickSendComment: () => Promise<void>;
   commentValue: string;
   setCommentValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const CommentInput: React.FC<Props> = ({
-  fetchAddComment,
+  onClickSendComment,
   commentValue,
   setCommentValue,
 }) => {
   const onClickSubmit = () => {
-    fetchAddComment();
+    onClickSendComment();
     setCommentValue("");
   };
   return (
@@ -79,7 +79,7 @@ const InputWrapper = styled.div`
   align-items: center;
   padding: 15px;
   border-radius: 30px;
-
+  background: ${({ theme }) => theme.color.btnBg};
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
@@ -91,6 +91,8 @@ const Input = styled.input`
   width: 100%;
   outline: none;
   border: none;
+  background: transparent;
+  color: ${({ theme }) => theme.color.font};
 `;
 
 const CommitBtn = styled.div`

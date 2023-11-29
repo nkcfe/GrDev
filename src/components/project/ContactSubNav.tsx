@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { styled } from "styled-components";
+import { css, styled } from "styled-components";
 
 const ContactSubNav = () => {
   const [selectedNav, setSelectedNav] = useState("");
@@ -38,10 +38,10 @@ export default ContactSubNav;
 const Base = styled.div`
   position: sticky;
   top: 60px;
-  background: rgba(255, 255, 255, 0.8);
+  background: ${({ theme }) => theme.color.gradientBg};
   backdrop-filter: blur(5px);
-  border-top: 0.5px solid #dfdfdf;
-  border-bottom: 0.5px solid #dfdfdf;
+  border-top: 0.5px solid ${({ theme }) => theme.color.border};
+  border-bottom: 0.5px solid ${({ theme }) => theme.color.border};
 `;
 
 const Wrapper = styled.div`
@@ -60,9 +60,17 @@ const Wrapper = styled.div`
 const Item = styled.div<{ isSelected: boolean }>`
   font-size: 14px;
   font-weight: bold;
-  color: ${({ isSelected }) => (isSelected ? "black" : "#abb6c7")};
+  ${({ isSelected }) =>
+    isSelected
+      ? css`
+          color: ${({ theme }) => theme.color.font};
+        `
+      : css`
+          color: ${({ theme }) => theme.color.hover};
+        `}
+
   &:hover {
-    color: black;
+    color: ${({ theme }) => theme.color.font};
   }
   cursor: pointer;
 `;

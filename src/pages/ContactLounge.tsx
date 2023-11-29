@@ -19,11 +19,17 @@ const msgObj = {
 
 interface Props {
   projects: Projects[];
+  toggleTheme: () => void;
+  themeMode: string;
 }
 
-const ContactLounge: React.FC<Props> = ({ projects }) => {
+const ContactLounge: React.FC<Props> = ({
+  projects,
+  toggleTheme,
+  themeMode,
+}) => {
   return (
-    <ContactTemplate>
+    <ContactTemplate toggleTheme={toggleTheme} themeMode={themeMode}>
       <HeaderCarousel />
       <LoungeBodyHeader msg={msgObj.project} />
       <LoungeCraousel projects={projects} />

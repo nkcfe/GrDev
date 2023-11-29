@@ -5,7 +5,7 @@ import { FaCommentDots } from "react-icons/fa";
 import { PiCursorClickFill } from "react-icons/pi";
 import Modal from "../../Modal";
 import DetailModal from "./DetailModal";
-import { Contents } from "../../../interface/interface";
+import { Contents, ContentsDocumentData } from "../../../interface/interface";
 
 const ContentCard: React.FC<{
   content: Contents;
@@ -81,7 +81,7 @@ const Base = styled.div`
   width: 600px;
   max-height: 500px;
 
-  background: #fff;
+  background: ${({ theme }) => theme.color.bg};
 
   padding: 20px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -135,18 +135,19 @@ const UserIntroWrapper = styled.div`
 const UserName = styled.div`
   font-size: 18px;
   font-weight: bold;
+  color: ${({ theme }) => theme.color.font};
 `;
 
 const UserIntro = styled.div`
   font-size: 16px;
-  color: #c6c6c6;
+  color: ${({ theme }) => theme.color.subFont};
 `;
 
 const CreationDate = styled.div`
   margin-right: auto;
   font-size: 14px;
   font-weight: bold;
-  color: #c6c6c6;
+  color: ${({ theme }) => theme.color.subFont};
 `;
 
 const Title = styled.div`
@@ -155,6 +156,7 @@ const Title = styled.div`
 
   font-size: 24px;
   font-weight: bold;
+  color: ${({ theme }) => theme.color.font};
 `;
 
 const Body = styled.div`
@@ -165,6 +167,7 @@ const Body = styled.div`
   position: relative;
   max-height: 300px;
   width: 100%;
+  color: ${({ theme }) => theme.color.font};
 
   &:after {
     content: "";
@@ -173,10 +176,7 @@ const Body = styled.div`
     left: 0;
     width: 100%;
     height: 100px; /* 그라데이션의 높이 조절 가능 */
-    background: linear-gradient(
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 10)
-    );
+    background: ${({ theme }) => theme.color.gradientBg};
   }
 `;
 
@@ -195,7 +195,7 @@ const ButtonWrapper = styled.div<{ color?: string }>`
   align-items: center;
   gap: 5px;
 
-  background: #fff;
+  background: ${({ theme }) => theme.color.btnBg};
   color: ${({ color }) => color};
 
   width: 55px;

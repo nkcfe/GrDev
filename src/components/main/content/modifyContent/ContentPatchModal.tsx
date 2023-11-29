@@ -41,7 +41,7 @@ const Base = styled.div`
   justify-content: start;
   align-items: start;
 
-  background: #fff;
+  background: ${({ theme }) => theme.color.bg};
 
   width: 1000px;
   max-width: 90vh;

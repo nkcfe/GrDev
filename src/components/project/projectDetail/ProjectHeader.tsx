@@ -3,25 +3,10 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Modal from "../../Modal";
 import ContactPostModal from "../ContactPostModal";
-import { ContactProps } from "../../../interface/interface";
+import { ContactProps, Projects } from "../../../interface/interface";
 
-const ContactHeader: React.FC<ContactProps> = ({
-  contactTypeValue,
-  setContactTypeValue,
-  contactTitleValue,
-  setContactTitleValue,
-  contactDesValue,
-  contactSetDesValue,
-  contactPurposeValue,
-  setContactPurposeValue,
-  contactTimeValue,
-  setContactTimeValue,
-  contactSelectedOption,
-  setContactSelectedOption,
+const ProjectHeader: React.FC<{ projects: Projects[] | undefined }> = ({
   projects,
-  setProjects,
-  projectBodyValue,
-  setProjectBodyValue,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -49,25 +34,7 @@ const ContactHeader: React.FC<ContactProps> = ({
             <span>작성하기</span>
           </PostBtn>
           <Modal isOpen={isModalOpen}>
-            <ContactPostModal
-              toggleModal={toggleModal}
-              contactTypeValue={contactTypeValue}
-              setContactTypeValue={setContactTypeValue}
-              contactTitleValue={contactTitleValue}
-              setContactTitleValue={setContactTitleValue}
-              contactDesValue={contactDesValue}
-              contactSetDesValue={contactSetDesValue}
-              contactPurposeValue={contactPurposeValue}
-              setContactPurposeValue={setContactPurposeValue}
-              contactTimeValue={contactTimeValue}
-              setContactTimeValue={setContactTimeValue}
-              contactSelectedOption={contactSelectedOption}
-              setContactSelectedOption={setContactSelectedOption}
-              projects={projects}
-              setProjects={setProjects}
-              projectBodyValue={projectBodyValue}
-              setProjectBodyValue={setProjectBodyValue}
-            />
+            <ContactPostModal toggleModal={toggleModal} projects={projects} />
           </Modal>
         </Wrapper>
       </Container>
@@ -75,10 +42,10 @@ const ContactHeader: React.FC<ContactProps> = ({
   );
 };
 
-export default ContactHeader;
+export default ProjectHeader;
 const Base = styled.div`
-  background: #fff;
-  border-bottom: 0.5px solid #dfdfdf;
+  background: ${({ theme }) => theme.color.carouselBg};
+  border-bottom: 0.5px solid ${({ theme }) => theme.color.border};
 `;
 
 const Container = styled.div`
@@ -116,9 +83,11 @@ const DescriptionWrapper = styled.div`
   h1 {
     font-size: 28px;
     font-weight: bold;
+    color: ${({ theme }) => theme.color.font};
   }
   span {
     font-size: 14px;
+    color: ${({ theme }) => theme.color.font};
   }
 `;
 

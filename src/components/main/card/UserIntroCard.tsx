@@ -40,12 +40,12 @@ const UserInfoContainer = styled.div`
   width: 600px;
   height: 200px;
   padding: 10px;
+  background: ${({ theme }) => theme.color.btnBg};
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
       rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   }
   cursor: pointer;
-  
 `;
 
 const UserProfileImgWrapper = styled.div`
@@ -81,11 +81,16 @@ const UserName = styled.div`
   font-family: "Josefin Sans", sans-serif;
   font-size: 18px;
   font-weight: bold;
+  color: ${({ theme }) => theme.color.font};
 `;
 
-const UserInfo = styled.div``;
+const UserInfo = styled.div`
+  color: ${({ theme }) => theme.color.subFont};
+`;
 
-const UserOneLineIntro = styled.div``;
+const UserOneLineIntro = styled.div`
+  color: ${({ theme }) => theme.color.font};
+`;
 
 const FollowBtnWrapper = styled.div`
   display: flex;

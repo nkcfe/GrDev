@@ -5,16 +5,15 @@ import { TiHeart } from "react-icons/ti";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import { FaCheck } from "react-icons/fa6";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { deleteComments, updateComments } from "../../../fetch/fetch";
+import { useMutation, useQueryClient } from "react-query";
 
 interface Props {
   comment: Comments;
-  comments: Comments[];
-  setComments: React.Dispatch<React.SetStateAction<Comments[]>>;
+  comments: Comments[] | undefined;
 }
 
-const CommentCard: React.FC<Props> = ({ comment, comments, setComments }) => {
+const CommentCard: React.FC<Props> = ({ comment, comments }) => {
   const { author, id, likeCounts, creationDate, text } = comment;
   const [isEllipsisOn, setIsEllipsisOn] = useState<boolean>(false);
   const [chatValue, setChatValue] = useState(text);
@@ -32,13 +31,31 @@ const CommentCard: React.FC<Props> = ({ comment, comments, setComments }) => {
     setChatValue(e.target.value);
   };
 
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation<
+    void,
+    unknown,
+    { id: string; comment: Comments; chatValue: string }
+  >(updateComments, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("comments");
+    },
+  });
+
   const onCompleteCommentPatch = async () => {
-    updateComments(id, comment, setComments, chatValue);
+    mutation.mutate({ id, comment, chatValue });
     toggleEditMode();
   };
 
+  const mutationDelete = useMutation(deleteComments, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("comments");
+    },
+  });
+
   const onClickCommentDelete = () => {
-    deleteComments(id, setComments);
+    mutationDelete.mutate(id);
   };
 
   useEffect(() => {
@@ -169,6 +186,7 @@ const UserName = styled.div`
   font-family: "Josefin Sans", sans-serif;
   font-size: 16px;
   font-weight: bold;
+  color: ${({ theme }) => theme.color.font};
 `;
 
 const CtrContainer = styled.div`
@@ -202,21 +220,11 @@ const CtrItem = styled.div<{ type?: string }>`
   padding: 3px 5px;
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  ${({ type }) =>
-    type === "imp"
-      ? css`
-          background: #fa5c54;
-          color: #fff;
-          &:hover {
-            background-color: #dd524b;
-          }
-        `
-      : css`
-          background: #fff;
-          &:hover {
-            background-color: #c0c0c0;
-          }
-        `}
+  color: ${({ theme }) => theme.color.font};
+  background: ${({ theme }) => theme.color.btnBg};
+  &:hover {
+    background: ${({ theme }) => theme.color.hover};
+  }
 
   cursor: pointer;
   margin-bottom: 3px;
@@ -262,8 +270,8 @@ const HeartBtnWrapper = styled.div`
 `;
 
 const Chat = styled.div`
-  color: #253c3c;
-  background: #def1f1;
+  color: ${({ theme }) => theme.color.font};
+  background: ${({ theme }) => theme.color.btnBg};
   padding: 10px 20px;
   margin-left: 15px;
   border-radius: 0 15px 15px 15px;

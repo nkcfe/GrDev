@@ -82,7 +82,7 @@ const PostHeader: React.FC<Props> = ({
         </CoverImgContainer>
       ) : (
         <HoverCtrContainer onClick={onToggleCoverImg}>
-          <Button pointColor="black">
+          <Button pointColor="basic">
             <BsFillImageFill />
             <span>커버 추가</span>
           </Button>
@@ -130,10 +130,10 @@ const CoverImgCtrBtn = styled.div<{ position: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #fff;
+  background: ${({ theme }) => theme.color.btnBg};
 
   padding: 5px;
-
+  color: ${({ theme }) => theme.color.font};
   font-size: 13px;
 
   border-radius: ${({ position }) =>
@@ -144,7 +144,7 @@ const CoverImgCtrBtn = styled.div<{ position: string }>`
 
   cursor: pointer;
   &:hover {
-    background: #e2e2e2;
+    background: ${({ theme }) => theme.color.hover};
   }
 `;
 
@@ -192,10 +192,11 @@ const Title = styled.input`
 
   font-size: 30px;
   font-weight: bold;
-  color: #191b2a;
+  color: ${({ theme }) => theme.color.font};
+  background: transparent;
 
   &::placeholder {
-    color: #e3e2e2;
+    color: ${({ theme }) => theme.color.placeHorderFont};
   }
 `;
 

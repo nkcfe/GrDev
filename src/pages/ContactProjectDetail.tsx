@@ -9,11 +9,17 @@ import ProjectDetail from "../components/project/projectDetail/ProjectDetail";
 
 interface Props {
   projects: Projects[];
+  toggleTheme: () => void;
+  themeMode: string;
 }
-const ContactProjectDetail: React.FC<Props> = ({ projects }) => {
+const ContactProjectDetail: React.FC<Props> = ({
+  projects,
+  toggleTheme,
+  themeMode,
+}) => {
   return (
-    <ContactTemplate>
-      <ProjectDetail projects={projects} />
+    <ContactTemplate toggleTheme={toggleTheme} themeMode={themeMode}>
+      <ProjectDetail />
     </ContactTemplate>
   );
 };

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { MdArrowForwardIos } from "react-icons/md";
 import { ImFire } from "react-icons/im";
+import { useNavigate } from "react-router-dom";
 interface Props {
   msg: {
     titleMsg: string;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const LoungeBodyHeader: React.FC<Props> = ({ msg }) => {
+  const navigate = useNavigate();
   return (
     <Base>
       <Wrapper>
@@ -20,7 +22,7 @@ const LoungeBodyHeader: React.FC<Props> = ({ msg }) => {
           </TitleMsg>
           <SubTitleMsg>{msg.subTitleMsg}</SubTitleMsg>
         </TextWrapper>
-        <AllBtn>
+        <AllBtn onClick={() => navigate("/contact/project")}>
           <span>모두 보기</span>
           <MdArrowForwardIos />
         </AllBtn>
@@ -33,7 +35,7 @@ export default LoungeBodyHeader;
 
 const Base = styled.div`
   width: 100%;
-  background: #fff;
+  background: ${({ theme }) => theme.color.bg};
   padding: 20px 0;
 `;
 
@@ -51,6 +53,7 @@ const TextWrapper = styled.div`
   justify-content: center;
   align-items: start;
   gap: 10px;
+  color: ${({ theme }) => theme.color.font};
 `;
 
 const TitleMsg = styled.div`
@@ -74,4 +77,9 @@ const AllBtn = styled.div`
   justify-content: center;
   gap: 5px;
   font-weight: bold;
+  color: ${({ theme }) => theme.color.font};
+  cursor: pointer;
+  &:hover {
+    color: ${({ theme }) => theme.color.hover};
+  }
 `;
